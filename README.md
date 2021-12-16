@@ -48,4 +48,25 @@ also,
 
 * Sanctum middleware `auth:sanctum`
 
+# installation of VUE
+* `npm install --save vue@next && npm install --save-dev vue-loader@next`
+* `npm install`
+* `npm run dev`
+* add `.vue()` to `webpack.mix.js`
+* edit `app.js`
+```
+require('./bootstrap');
 
+import { createApp } from 'vue'
+
+import App from './components/App.vue'
+
+createApp(App)
+    .mount("#app");
+```
+
+* create App.vue in components folder
+
+
+# Run 
+* `php artisan serve` && `npm run watch`
