@@ -70,3 +70,8 @@ createApp(App)
 
 # Run 
 * `php artisan serve` && `npm run watch`
+
+# Advance Setup
+* vue router `npm install vue-router@next` 
+* vuex `npm install vuex@next`
+* shared mutation `npm install vuex-shared-mutations`
