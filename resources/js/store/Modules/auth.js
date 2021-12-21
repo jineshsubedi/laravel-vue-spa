@@ -40,7 +40,7 @@ const actions = {
                     // localStorage.setItem('token', res.data.data.access_token)
                 commit('setAuth', true)
                 commit('setUser', res.data.data.user)
-                commit('setRole', res.data.data.user.role)
+                commit('setRole', res.data.data.user.staffType)
                     // localStorage.setItem('auth', true)
                     // localStorage.setItem("user", JSON.stringify(user));
             }).catch((err) => {
@@ -62,7 +62,7 @@ const actions = {
     async getUser({ commit }) {
         await Auth.getUser().then((res) => {
             commit('setUser', res.data)
-            commit('setRole', res.data.role)
+            commit('setRole', res.data.staffType)
             commit('setAuth', true)
                 // localStorage.setItem("user", JSON.stringify(res.data));
         }).catch((err) => {

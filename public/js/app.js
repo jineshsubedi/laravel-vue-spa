@@ -23561,7 +23561,7 @@ var actions = {
                 // localStorage.setItem('token', res.data.data.access_token)
                 commit('setAuth', true);
                 commit('setUser', res.data.data.user);
-                commit('setRole', res.data.data.user.role); // localStorage.setItem('auth', true)
+                commit('setRole', res.data.data.user.staffType); // localStorage.setItem('auth', true)
                 // localStorage.setItem("user", JSON.stringify(user));
               })["catch"](function (err) {
                 throw err.response;
@@ -23619,7 +23619,7 @@ var actions = {
               _context3.next = 3;
               return _endpoints_Auth__WEBPACK_IMPORTED_MODULE_3__["default"].getUser().then(function (res) {
                 commit('setUser', res.data);
-                commit('setRole', res.data.role);
+                commit('setRole', res.data.staffType);
                 commit('setAuth', true); // localStorage.setItem("user", JSON.stringify(res.data));
               })["catch"](function (err) {
                 throw err.response;
