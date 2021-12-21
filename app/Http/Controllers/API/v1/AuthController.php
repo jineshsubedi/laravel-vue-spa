@@ -22,11 +22,19 @@ class AuthController extends BaseController
             ], 500);
         }
         $token = $this->guard()->user()->createToken('auth-token')->plainTextToken;
-        $data = [
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'user' => Auth::user()
-        ];
+        if(\Config::get('app.env') == 'production')
+        {
+            $data = [
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'user' => Auth::user(),
+            ];
+        }else{
+            $data = [
+                'user' => Auth::user(),
+            ];
+        }
+        
         return $this->sendSuccessResponse($data, 'User Logged In Successfully!');
     }
 

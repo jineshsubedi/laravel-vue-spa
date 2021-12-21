@@ -1,57 +1,48 @@
 import sharedMutations from 'vuex-shared-mutations';
-import createPersistedState from "vuex-persistedstate";
-import axios from 'axios';
+import Csrf from '../../helpers/Csrf';
+import Auth from '../../endpoints/Auth';
 
 const state = {
-    user: null,
-    loggedIn: false
+    user: {},
+    auth: false,
+    role: '',
 }
 const getters = {
     user(state) {
         return state.user;
     },
-    status(state) {
-        return state.loggedIn
-    },
-    verified(state) {
-        if (state.user) return state.user.email_verified_at
-        return null
-    },
-    id(state) {
-        if (state.user) return state.user.id
-        return null
-    },
     role(state) {
-        if (state.user) return state.user.role
-        return null
+        return state.user.role
     },
-    isLoggedIn(state) {
-        if (state.user != null) {
-            return true;
-        }
-        return false;
+    auth(state) {
+        return state.auth
     }
 }
 const mutations = {
     setUser(state, payload) {
         state.user = payload;
     },
-    setStatus(state, payload) {
-        state.isLoggedIn = payload
+    setAuth(state, payload) {
+        state.auth = payload
+    },
+    setRole(state, payload) {
+        state.role = payload
     }
 }
 
 const actions = {
 
-    async login({ dispatch, commit }, payload) {
+    async login({ commit }, payload) {
         try {
-            await axios.get('/sanctum/csrf-cookie');
-
-            await axios.post('/api/v1/login', payload).then((res) => {
+            await Csrf.getCookie();
+            await Auth.login(payload).then((res) => {
                 const user = res.data.data.user
-                localStorage.setItem('token', res.data.data.access_token)
-                localStorage.setItem("user", JSON.stringify(user));
-                dispatch('getUser');
+                    // localStorage.setItem('token', res.data.data.access_token)
+                commit('setAuth', true)
+                commit('setUser', res.data.data.user)
+                commit('setRole', res.data.data.user.role)
+                    // localStorage.setItem('auth', true)
+                    // localStorage.setItem("user", JSON.stringify(user));
             }).catch((err) => {
                 throw err.response
             });
@@ -60,25 +51,26 @@ const actions = {
         }
     },
     async logout({ commit }) {
-        await axios.post('/api/v1/logout').then((res) => {
-            localStorage.removeItem('token')
-            commit('setUser', null);
+        await Auth.logout().then((res) => {
+            commit('setAuth', false)
+                // localStorage.clear()
+            delete http.defaults.headers.common["Authorization"];
         }).catch((err) => {
 
         })
     },
     async getUser({ commit }) {
-        await axios.get('/api/v1/user').then((res) => {
-            console.log('get user')
-            console.log(res)
-            commit('setUser', res.data);
+        await Auth.getUser().then((res) => {
+            commit('setUser', res.data)
+            commit('setRole', res.data.role)
+            commit('setAuth', true)
+                // localStorage.setItem("user", JSON.stringify(res.data));
         }).catch((err) => {
-            console.log(err)
-            throw (err.response)
+            throw err.response
         })
-    },
+    }
 }
-const plugins = [createPersistedState()]
+const plugins = [sharedMutations({ predicate: ['setUser', 'setAuth', 'setRole'] })]
 
 export default {
     state,

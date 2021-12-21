@@ -80,23 +80,6 @@
                 }
                 this.busy = false ;
             },
-            async checkLogedInUser()
-            {
-                try{
-                    await this.$store.dispatch('getUser')
-                    this.$router.replace({name: 'dashboard'})
-                }catch(ex)
-                {
-                    console.log(ex)
-                }
-            }
         },
-        created() {
-            // this.checkLogedInUser()
-        },
-        mounted() {
-            // console.log(this.$store.state.user)
-            // this.checkLogedInUser()
-        }
     }
 </script>

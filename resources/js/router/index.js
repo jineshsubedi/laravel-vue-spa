@@ -37,29 +37,27 @@ const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes,
 });
-
-function loggedIn() {
-    return localStorage.getItem('token')
-}
-
-router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.guard === 'auth')) {
-        if (!loggedIn()) {
-            next({ name: 'login' })
+store.dispatch("getUser").then(() => {
+    router.beforeEach((to, from, next) => {
+        const auth = store.state.Auth.auth
+        if (to.matched.some(record => record.meta.guard === 'auth')) {
+            console.log('auth')
+            if (!auth) {
+                next({ name: 'login' })
+            } else {
+                next();
+            }
+        } else if (to.matched.some(record => record.meta.guard === 'guest')) {
+            console.log('guest')
+            if (auth) {
+                next({ name: 'dashboard' })
+            } else {
+                next();
+            }
         } else {
-            store.dispatch('getUser')
-            next();
+            next()
         }
-    } else if (to.matched.some(record => record.meta.guard === 'guest')) {
-        if (loggedIn()) {
-            store.dispatch('getUser')
-            next({ name: 'dashboard' })
-        } else {
-            next();
-        }
-    } else {
-        next()
-    }
-});
+    });
+})
 
 export default router;
