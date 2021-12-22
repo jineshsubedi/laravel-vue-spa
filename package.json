@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@aacassandra/vue3-progressbar": "^1.0.3",
         "js-cookie": "^3.0.1",
         "vue-router": "^4.0.12",
         "vuex": "^4.0.2",

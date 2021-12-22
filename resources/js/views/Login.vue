@@ -5,7 +5,12 @@
                 <div class="card">
                     <div class="card-header">Login</div>
                     <div class="card-body">
-                        <Errors type="danger" v-if="errors" :content="errors" @close="errors=null" />
+                        <div v-if="errors.message != ''">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>{{errors.message}}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
                         <form @submit.prevent="submitLogin">
                             <div class="row mb-3">
                                 <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
@@ -50,10 +55,8 @@
     </div>
 </template>
 <script>
-    import Errors from '../components/Errors.vue';
     export default {
         components: {
-            Errors
         },
         data: () => {
             return {
@@ -62,23 +65,26 @@
                     password: '',
                     remember: false
                 },
-                errors : null ,
-                busy : false ,
+                errors : {
+                    message: ''
+                },
             }
         },
         methods: {
             async submitLogin()
             {
-                this.busy = true ;
-                this.errors = null
+                this.$Progress.start()
                 try{
                     await this.$store.dispatch('login', this.form)
                     this.$router.push({name: 'dashboard'})
+                    
                 }catch(e)
                 {
+                    this.$Progress.fail()
                     this.errors = e.data
+                    console.log(e.data)
                 }
-                this.busy = false ;
+                this.$Progress.finish()
             },
         },
     }
