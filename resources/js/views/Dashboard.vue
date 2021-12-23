@@ -28,9 +28,14 @@
             }
         },
         async mounted() {
-            await this.$store.dispatch('getUser')
-            this.role = this.$store.state.Auth.role
-            // console.log(this.$store.state.Auth.user)
+            this.$Progress.start()
+            await this.$store.dispatch('getUser').then(()=>{
+                this.$Progress.finish()
+                this.role = this.$store.state.Auth.role
+            }).catch((err) => {
+                this.$Progress.fail()
+                this.$router.replace({ name: "login" });
+            })
         }
     }
 </script>

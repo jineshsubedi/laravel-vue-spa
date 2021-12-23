@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@aacassandra/vue3-progressbar": "^1.0.3",
+        "jquery": "^3.6.0",
         "js-cookie": "^3.0.1",
         "vue-router": "^4.0.12",
         "vuex": "^4.0.2",

@@ -5,6 +5,7 @@ import { createApp } from 'vue'
 import App from './components/App.vue'
 import router from './router'
 import store from './store'
+
 import VueProgressBar from "@aacassandra/vue3-progressbar";
 const options = {
     color: "#bffaf3",
@@ -19,6 +20,9 @@ const options = {
     location: "top",
     inverse: false,
 };
+import "./assets/css/adminlte.min.css";
+window.$ = window.jQuery = require("jquery");
+import "./assets/js/adminlte.min.js";
 
 createApp(App)
     .use(router)
