@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\AuthUserResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
@@ -27,7 +28,7 @@ class AuthController extends BaseController
             $data = [
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-                'user' => Auth::user(),
+                'user' => new AuthUserResource(Auth::user()),
             ];
         }else{
             $data = [
@@ -50,5 +51,10 @@ class AuthController extends BaseController
     public function guard($guard = 'web')
     {
         return Auth::guard($guard);
+    }
+
+    public function authUser(Request $request)
+    {
+        return new AuthUserResource($request->user());
     }
 }

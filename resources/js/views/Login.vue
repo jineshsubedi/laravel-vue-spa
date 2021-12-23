@@ -1,55 +1,62 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Login</div>
-                    <div class="card-body">
-                        <div v-if="errors.message != ''">
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>{{errors.message}}</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="login-page" style="min-height: 496.781px">
+        <div class="login-box">
+            <!-- /.login-logo -->
+            <div class="card card-outline card-primary">
+                <div class="card-header text-center">
+                    <a ><b>Rolling</b>Access</a>
+                </div>
+                <div class="card-body login-card-body">
+                    <p class="login-box-msg">Sign in to start your session</p>
+                    <div class="form-group text-center" v-if="errors.message != ''">
+                        <span id="" class="error invalid-feedback show" >{{errors.message}}</span>
+                    </div>
+                    <form @submit.prevent="submitLogin">
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Email" v-model="form.email">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                                </div>
                             </div>
                         </div>
-                        <form @submit.prevent="submitLogin">
-                            <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
-
-                                <div class="col-md-6">
-                                    <input v-model="form.email" type="email" class="form-control" name="email">
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" placeholder="Password" v-model="form.password">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
                                 </div>
                             </div>
-
-                            <div class="row mb-3">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-
-                                <div class="col-md-6">
-                                    <input v-model="form.password" type="password" class="form-control" name="password">
+                        </div>
+                        <div class="row">
+                            <div class="text-center">
+                                <div class="icheck-primary">
+                                <input type="checkbox" id="remember">
+                                <label for="remember">
+                                    &nbsp;Remember Me
+                                </label>
                                 </div>
                             </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6 offset-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember" v-model="form.remember">
-
-                                        <label class="form-check-label" for="remember">
-                                            Remeber Me
-                                        </label>
-                                    </div>
-                                </div>
+                            <!-- /.col -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Sign In</button>
                             </div>
+                            <!-- /.col -->
+                        </div>
+                    </form>
 
-                            <div class="row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Login
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <!-- <div class="social-auth-links text-center mb-3">
+                        <p>- OR -</p>
+                        <a href="#" class="btn btn-block btn-primary">
+                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+                        </a>
+                        <a href="#" class="btn btn-block btn-danger">
+                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+                        </a>
+                    </div> -->
+                <!-- /.social-auth-links -->
                 </div>
+                <!-- /.login-card-body -->
             </div>
         </div>
     </div>
@@ -82,10 +89,14 @@
                 {
                     this.$Progress.fail()
                     this.errors = e.data
-                    console.log(e.data)
                 }
                 this.$Progress.finish()
             },
         },
     }
 </script>
+<style>
+.invalid-feedback{
+    display: block !important;
+}
+</style>

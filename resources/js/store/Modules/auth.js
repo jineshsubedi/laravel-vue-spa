@@ -3,9 +3,9 @@ import Csrf from '../../helpers/Csrf';
 import Auth from '../../endpoints/Auth';
 
 const state = {
-    user: {},
-    auth: false,
-    role: '',
+    user: JSON.parse(localStorage.getItem("user")) || {},
+    auth: localStorage.getItem("auth") || false,
+    role: localStorage.getItem("role") || "",
 }
 const getters = {
     user(state) {
@@ -36,13 +36,12 @@ const actions = {
         try {
             await Csrf.getCookie();
             await Auth.login(payload).then((res) => {
-                const user = res.data.data.user
-                    // localStorage.setItem('token', res.data.data.access_token)
                 commit('setAuth', true)
                 commit('setUser', res.data.data.user)
                 commit('setRole', res.data.data.user.staffType)
-                    // localStorage.setItem('auth', true)
-                    // localStorage.setItem("user", JSON.stringify(user));
+                localStorage.setItem('role', res.data.data.user.staffType)
+                localStorage.setItem('auth', true)
+                localStorage.setItem("user", JSON.stringify(res.data.data.user));
             }).catch((err) => {
                 throw err.response
             });
@@ -53,7 +52,7 @@ const actions = {
     async logout({ commit }) {
         await Auth.logout().then((res) => {
             commit('setAuth', false)
-                // localStorage.clear()
+            localStorage.clear()
             delete http.defaults.headers.common["Authorization"];
         }).catch((err) => {
 
@@ -61,10 +60,12 @@ const actions = {
     },
     async getUser({ commit }) {
         await Auth.getUser().then((res) => {
-            commit('setUser', res.data)
-            commit('setRole', res.data.staffType)
+            commit('setUser', res.data.data)
+            commit('setRole', res.data.data.staffType)
             commit('setAuth', true)
-                // localStorage.setItem("user", JSON.stringify(res.data));
+            localStorage.setItem("user", JSON.stringify(res.data.data));
+            localStorage.setItem("role", res.data.data.staffType);
+            localStorage.setItem("auth", true);
         }).catch((err) => {
             throw err.response
         })

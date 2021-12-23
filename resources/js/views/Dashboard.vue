@@ -1,24 +1,33 @@
 <template>
-<div>
-    <span v-if="role==1"><Supervisor /></span>
-    <span v-if="role==2"><Staffs /></span>
-    <span v-if="role==3"><Branchadmin /></span>
-    <button type="button" class="btn btn-sm btn-primary" @click="logout">LogOut</button>
-</div>
+<base-layout>
+    <template v-slot:header>
+      <PageHeader :title="title" :breadcrumbs="breadcrumbs"></PageHeader>
+    </template>
+    <template v-slot:default>
+      <h1>Dashboard</h1>
+    </template>
+</base-layout>
+
 </template>
 <script>
-    import Supervisor from '../views/supervisor.vue'
-    import Staffs from '../views/Staff.vue'
-    import Branchadmin from '../views/branchadmin.vue'
+    import PageHeader from "../layouts/components/PageHeader";
     export default {
         components: {
-            Supervisor,
-            Staffs,
-            Branchadmin
+            PageHeader
         },
         data: () => {
             return {
-                role: ''
+                title: "Dashboard",
+                breadcrumbs: [
+                    {
+                        title: "Home",
+                        link: "/",
+                    },
+                    {
+                        title: "Dashboard",
+                        link: "",
+                    },
+                ],
             }
         },
         methods: {
@@ -27,15 +36,7 @@
                 this.$router.replace({ name: "login" });
             }
         },
-        async mounted() {
-            this.$Progress.start()
-            await this.$store.dispatch('getUser').then(()=>{
-                this.$Progress.finish()
-                this.role = this.$store.state.Auth.role
-            }).catch((err) => {
-                this.$Progress.fail()
-                this.$router.replace({ name: "login" });
-            })
+        mounted() {
         }
     }
 </script>
