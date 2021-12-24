@@ -21,6 +21,7 @@
 import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
 import Footer from "../components/Footer";
+import Auth from "../../endpoints/Auth";
 export default {
     name: "BaseLayout",
     components: {
@@ -28,7 +29,17 @@ export default {
         SideBar,
         Footer
     },
-    mounted() {
+    async mounted() {
+      try {
+        const resp = await Auth.getUser()
+        if(this.$store.state.Auth.role != resp.data.data.staffType)
+        {
+          await this.$store.dispatch("logout");
+          this.$router.replace({ name: "login" });
+        }
+      } catch (error) {
+        
+      }
     }
 };
 </script>
