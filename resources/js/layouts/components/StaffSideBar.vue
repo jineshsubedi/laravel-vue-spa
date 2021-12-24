@@ -11,10 +11,10 @@
           >
       </li>
       <li class="nav-item">
-          <a href="#" class="nav-link">
-          <i class="nav-icon fas fa-sign-out-alt"></i>
-          <p>Staff Profile</p>
-          </a>
+          <router-link :to="{ name: 'staffs.profile' }" class="nav-link">
+          <i class="nav-icon fas fa-user"></i>
+          <p>Profile</p>
+          </router-link>
       </li>
       <li class="nav-item">
           <a href="#" class="nav-link" @click="logout">

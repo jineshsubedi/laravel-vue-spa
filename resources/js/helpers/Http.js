@@ -1,7 +1,10 @@
 import axios from "axios";
 
 let Api = axios.create({
-    baseURL: process.env.APP_URL
+    baseURL: window.origin,
+    headers: {
+        "Content-type": "application/json",
+    },
 });
 
 Api.defaults.withCredentials = true;

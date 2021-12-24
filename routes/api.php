@@ -22,4 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/user', 'AuthController@authUser');
     Route::post('/logout', 'AuthController@logout');
+
+    Route::group(['prefix' => 'staffs', 'as' => 'staffs.'], function(){
+        Route::get('/profile', 'Staffs\StaffController@profile');
+    });
 });

@@ -23,7 +23,7 @@ class AuthController extends BaseController
             ], 500);
         }
         $token = $this->guard()->user()->createToken('auth-token')->plainTextToken;
-        if(\Config::get('app.env') == 'production')
+        if(\Config::get('app.env') != 'production')
         {
             $data = [
                 'access_token' => $token,
@@ -32,7 +32,7 @@ class AuthController extends BaseController
             ];
         }else{
             $data = [
-                'user' => Auth::user(),
+                'user' => new AuthUserResource(Auth::user()),
             ];
         }
         

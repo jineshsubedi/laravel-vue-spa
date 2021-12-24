@@ -10,7 +10,7 @@ import store from './store'
 
 import VueProgressBar from "@aacassandra/vue3-progressbar";
 const options = {
-    color: "#bffaf3",
+    color: "#007bff",
     failedColor: "#874b4b",
     thickness: "5px",
     transition: {
@@ -30,7 +30,6 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 
 import BaseLayout from "./layouts/wrappers/Main";
-
 createApp(App)
     .component("base-layout", BaseLayout)
     .use(router)
